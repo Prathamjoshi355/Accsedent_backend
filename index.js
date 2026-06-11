@@ -11,7 +11,8 @@ const helpRoutes = require('./routes/help')
 const notificationsRoutes = require('./routes/notifications')
 
 const app = express()
-app.use(cors())
+const frontendOrigin = process.env.FRONTEND_URL || 'http://localhost:5173'
+app.use(cors({ origin: frontendOrigin }))
 app.use(express.json())
 
 const port = process.env.PORT || 4000
@@ -19,7 +20,6 @@ const port = process.env.PORT || 4000
 mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/accident_guardian')
   .then(()=> console.log('MongoDB connected'))
   .catch(err=> console.error('MongoDB error', err))
-
 app.use('/auth', authRoutes)
 app.use('/api', notificationsRoutes)
 app.use('/api/users', userRoutes)
