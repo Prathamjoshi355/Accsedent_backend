@@ -11,7 +11,7 @@ const helpRoutes = require('./routes/help')
 const notificationsRoutes = require('./routes/notifications')
 
 const app = express()
-const frontendOrigin = process.env.FRONTEND_URL || 'http://localhost:5173'
+const frontendOrigin = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$|\s+/g, '')
 app.use(cors({ origin: frontendOrigin }))
 app.use(express.json())
 
