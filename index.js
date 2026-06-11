@@ -12,7 +12,6 @@ const notificationsRoutes = require('./routes/notifications')
 
 const app = express()
 const defaultOrigins = [
-  'http://localhost:5173',
   'https://accsedent-frontend.vercel.app'
 ]
 const configuredOrigins = (process.env.FRONTEND_URL || '')
