@@ -4,7 +4,7 @@ const User = require('../models/User')
 const Event = require('../models/Event')
 const { authMiddleware } = require('../utils/jwt')
 const { sendMail } = require('../utils/mailer')
-const fetch = require('node-fetch')
+const fetch = (...args) => globalThis.fetch(...args)
 
 async function reverseGeocode(lat, lng){
   if(process.env.GEOCODE_PROVIDER === 'google' && process.env.GOOGLE_GEOCODE_API_KEY){

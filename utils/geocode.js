@@ -1,4 +1,4 @@
-const fetch = require('node-fetch')
+const fetch = (...args) => globalThis.fetch(...args)
 
 async function reverseGeocode(lat, lng) {
   if (!lat || !lng) return null
