@@ -11,8 +11,28 @@ const helpRoutes = require('./routes/help')
 const notificationsRoutes = require('./routes/notifications')
 
 const app = express()
-const frontendOrigin = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$|\s+/g, '')
-app.use(cors({ origin: frontendOrigin }))
+const defaultOrigins = [
+  'http://localhost:5173',
+  'https://accsedent-frontend.vercel.app'
+]
+const configuredOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => origin.trim().replace(/\/+$/, ''))
+  .filter(Boolean)
+const allowedOrigins = new Set([...defaultOrigins, ...configuredOrigins])
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin.replace(/\/+$/, ''))) {
+      return callback(null, true)
+    }
+    return callback(new Error(`Origin ${origin} is not allowed by CORS`))
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
+
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
 app.use(express.json())
 
 const port = process.env.PORT || 4000
