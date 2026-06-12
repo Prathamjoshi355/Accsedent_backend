@@ -25,10 +25,13 @@ const corsOptions = {
     if (!origin || allowedOrigins.has(origin.replace(/\/+$/, ''))) {
       return callback(null, true)
     }
+    console.warn(`CORS rejected origin: ${origin}`)
     return callback(new Error(`Origin ${origin} is not allowed by CORS`))
   },
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204
 }
 
 app.use(cors(corsOptions))
